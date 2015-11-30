@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gts-ws:RegisterNameSpaceRequest xmlns:gts-types="http://os3.cc/gts/types/1.0"
+ xmlns:gts-ws="http://os3.cc/gts/ws/1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://os3.cc/gts/ws/1.0 file:/home/aolsen/sb/gts/src/main/resources/gts-ws.xsd">
+    <gts-ws:namespace>os3.cc</gts-ws:namespace>
+</gts-ws:RegisterNameSpaceRequest>

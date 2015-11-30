@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:gts-types="http://os3.cc/gts/types/1.0"  xmlns:gts-ws="http://os3.cc/gts/ws/1.0" elementFormDefault="qualified" targetNamespace="http://os3.cc/gts/ws/1.0">
+    <xsd:import namespace="http://os3.cc/gts/types/1.0" schemaLocation="gts-types.xsd"/>
+    
+    <xsd:element name="RegisterNameSpaceRequest" type="gts-ws:RegisterNameSpaceRequestType"/>
+    <xsd:complexType name="RegisterNameSpaceRequestType">
+        <xsd:sequence>
+            <xsd:element name="namespace" type="xsd:string"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" type="xsd:ID"/>
+    </xsd:complexType>
+    
+    <xsd:element name="RegisterNameSpaceResponse" type="gts-ws:RegisterNameSpaceResponseType"/>
+    <xsd:complexType name="RegisterNameSpaceResponseType">
+        <xsd:sequence>
+            <xsd:element name="status" type="gts-ws:StatusType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:element name="Status" type="gts-ws:StatusType"/>
+    <xsd:complexType name="StatusType">
+        <xsd:sequence>
+            <xsd:element name="status" type="xsd:string"/>
+            <xsd:element name="error" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+</xsd:schema>

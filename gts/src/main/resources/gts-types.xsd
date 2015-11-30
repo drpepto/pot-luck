@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:gts="http://os3.cc/gts/types/1.0" elementFormDefault="qualified" targetNamespace="http://os3.cc/gts/types/1.0">
+
+    <xsd:element name="Period" type="gts:PeriodType"/>
+    <xsd:complexType name="PeriodType">
+        <xsd:sequence>
+            <xsd:element name="date-time" type="xsd:date"/>
+            <xsd:element name="datemask" type="xsd:string"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" type="xsd:ID"/>
+    </xsd:complexType>
+    
+    <xsd:element name="Dish" type="gts:DishType"/>
+    <xsd:complexType name="DishType">
+        <xsd:sequence>
+            <xsd:element name="owner" type="xsd:string"/>
+            <xsd:element ref="gts:Period"/>
+            <xsd:element name="dish" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:element name="PotLuck" type="gts:PotLuckType"/>
+    <xsd:complexType name="PotLuckType">
+        <xsd:sequence>
+            <xsd:element name="namespace" type="xsd:string"/>
+            <xsd:element ref="gts:Period"/>
+            <xsd:element name="potluck-name" type="xsd:string"/>
+            <xsd:element name="dish-queue" type="gts:DishQueueType"/>
+            <xsd:element name="block-chain" type="gts:BlockChainType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:element name="DishQueue" type="gts:DishQueueType"/>
+    <xsd:complexType name="DishQueueType">
+        <xsd:sequence>
+            <xsd:element ref="gts:Period"/>
+            <xsd:element name="index" type="xsd:long"/>
+            <xsd:element name="dish" type="gts:DishType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:element name="BlockChain" type="gts:BlockChainType"/>
+    <xsd:complexType name="BlockChainType">
+        <xsd:sequence>
+            <xsd:element name="initialization-vector" type="xsd:string"/>
+            <xsd:element ref="gts:Period"/>
+            <xsd:element name="block" type="gts:BlockType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:element name="Block" type="gts:BlockType"/>
+    <xsd:complexType name="BlockType">
+        <xsd:sequence>
+            <xsd:element name="previous-block-id" type="xsd:string"/>
+            <xsd:element name="period" type="gts:PeriodType"/>
+            <xsd:element name="dish-queue" type="gts:DishQueueType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="this-block-id" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+</xsd:schema>
