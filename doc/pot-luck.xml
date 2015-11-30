@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="US-ASCII"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd" [
+
+<!-- One method to get references from the online citation libraries.
+     There has to be one entity for each item to be referenced. 
+     An alternate method (rfc include) is described in the references. -->
+<!ENTITY RFC2119 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml">
+<!ENTITY RFC2629 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2629.xml">
+<!ENTITY RFC3552 SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.3552.xml">
+<!ENTITY I-D.narten-iana-considerations-rfc2434bis SYSTEM "http://xml2rfc.ietf.org/public/rfc/bibxml3/reference.I-D.narten-iana-considerations-rfc2434bis.xml">
+]>
+
+<?xml-stylesheet type='text/xsl' href='rfc2629.xslt' ?>
+
+<?rfc strict="yes" ?>
+<?rfc toc="yes"?>
+<?rfc tocdepth="4"?>
+<?rfc symrefs="yes"?>
+<?rfc sortrefs="yes" ?>
+<?rfc compact="yes" ?>
+<?rfc subcompact="no" ?>
+
+<rfc category="info" docName="internet-draft" ipr="trust200902">
+  <front>
+    <title abbrev="">Open Global Secure Timestamp Protocol</title>
+
+    <author fullname="Leland Andrew Olsen" initials="LAO" role="editor"
+            surname="Olsen">
+      <organization>OS3 LLC</organization>
+
+      <address>
+        <postal>
+          <street></street>
+          <city>Littleton</city>
+          <region>USA West</region>
+          <code>Colorado</code>
+          <country>USA</country>
+        </postal>
+        <phone>+1.801.360.4086</phone>
+        <email>andy@59clouds.com</email>
+      </address>
+    </author>
+
+    <date month="October" year="2015" />
+    <area>General</area>
+    <workgroup>Internet Engineering Task Force</workgroup>
+    <keyword>Secure</keyword>
+    <keyword>Anonymous</keyword>
+    <keyword>Election</keyword>
+
+    <abstract>
+      <t>A global, open, secure, annonymous timestamp protocol to feed
+      the next generation of block chain protocols.</t>
+    </abstract>
+  </front>
+
+  <middle>
+
+    <section title="Introduction">
+      <t>This document describes a simple protocol to allow previously
+      unknown actors to each contribute a small packet of random data
+      to a large digital pot, to hash the pot to generate a block
+      chain id and to verify the generated block chain id did indeed
+      come from all the dishes in the pot and so is trustworthy.</t>
+    </section>
+
+    <section title="Glossary">
+      <t>Here is a list of relevant terms:
+      <list style="symbols">
+
+        <t>Namespace - Any unique string used to group pot lucks
+        together.</t>
+
+        <t>Digital Dish - The hexidecimal result of any number of
+        random bytes being fed into the SHA512 algorithm. For example
+        the output of:
+          <figure>
+            <artwork><![CDATA[
+echo -n 'a number of random bytes' | sha512sum
+            ]]></artwork>
+          </figure>
+        </t>
+
+        <t>Pot Luck - An event, demarcated with a specific start time,
+        during which any actor may submit a digital dish and from
+        which pool of dishes, a block chain id is generated.</t>
+
+        <t>Pot Luck Director - The actor responsible for organizing
+        pot lucks, accepting the submission of digital dishes and
+        periodically generating block chain ids.</t>
+
+        <t>Block Chain Id - A unique id with the special
+        characteristic that the id is generated in such a way that it
+        forms an unbreakable chain with all the ids that have come
+        before it.</t>
+
+        <t>Period - A 64 bit datetime value formatted with "%d %m
+        %YYYY %H:%M:%S %Z" to a string representation that can then
+        further be sub divided like a network is subnetted by
+        appending a / and the number of date elements to keep.
+        <list style="symbols">
+          <t>/1 Truncate the datetime to just the year.</t>
+          <t>/2 Truncate the datetime to just the year and month.</t>
+          <t>/3 Truncate the datetime to just the year, month and
+          day.</t>
+          <t>/4 Truncate the datetime to just the year, month, day and
+          hour.</t>
+          <t>/5 Truncate the datetime to just the year, month, day,
+          hour and minute.</t>
+          <t>/6 Truncate the datetime to just the year, month, day,
+          hour, minute and second.</t>
+        </list>
+        Here is a list of examples:
+        <list style="symbols">
+          <t>"24 Nov 2015 13:25:18 MST/1" would be truncated to "01
+          Jan 2015 00:00:00/MST" and any search with this Period would
+          find any date in 2015.</t>
+          <t>"24 Nov 2015 13:25:18 MST/2" would be truncated to "01
+          Nov 2015 00:00:00/MST" and any search this Period would find
+          any date in November of 2015.</t>
+          <t>"24 Nov 2015 13:25:18 MST/3" would be truncated to "24
+          Nov 2015 00:00:00/MST" and any search this Period would find
+          any date on the 24th of November 2015.</t>
+          <t>"24 Nov 2015 13:25:18 MST/4" would be truncated to "24
+          Nov 2015 13:00:00/MST"and any search with this Period would
+          find any date from 1:00:00 pm to 1:59:59 on the 24th of
+          November 2015.</t>
+          <t>"24 Nov 2015 13:25:18 MST/5" would be truncated to "24
+          Nov 2015 13:25:00/MST" and any search with this Period would
+          find any date from 1:25:00 pm to 1:25:59 pm on the 24th of
+          November 2015.</t>
+          <t>"24 Nov 2015 13:25:18 MST/6" would be truncated to "24
+          Nov 2015 13:25:18/MST" and any search would only find date
+          that fell on exactly on the 18th second of the date
+          specified.</t>
+        </list>
+      </t>
+
+        <t>Epoch - The start Period for a pot lock. This Period will
+        determine how often block chain ids are created.</t>
+      </list>
+      </t>
+    </section>
+
+    <section title="Quick Start">
+      <t>A quick example to show the basic concepts:</t>
+
+      <t>Step One - We will register the World Timestamp Protocol
+      namespace for the benefit of humanity and all that do-gooder,
+      senitive, touchy feely koomaya bullshit:
+          <figure>
+            <artwork><![CDATA[
+{
+"message": {
+ "action" : "create-namespace",
+ "payload" : {
+  "namespace": "wtsp.io"
+ }
+}           
+            ]]></artwork>
+          </figure>
+      </t>
+
+      <t>Step Two - We will create a pot luck that resolves to the
+      minute. That is, every minute, we will get a new block chain.
+          <figure>
+            <artwork><![CDATA[
+{
+"message": {
+ "action" : "create-pot-luck",
+ "payload" : {
+  "pot-luck-name": "wtsp.io/gts",
+  "epoch" : "13 Nov 2015 14:09:35 MST/5"
+ }
+}           
+            ]]></artwork>
+          </figure>
+      </t>
+
+      <t>Step Three - Publish the epoch blockchain id:
+          <figure>
+            <artwork><![CDATA[
+{
+"wtsp.io/gts/0": {
+  "previous-blockchain-id": "",
+  "timestamp" : "13 Nov 2015 14:09:35/5",
+  "next-timestamp": "13 Nov 2015 14:10:00/5",
+  "block-chain-id" : "...fde5bf02a56e"
+  "dishes": [
+   "EPOCH",
+   "...6f73bcdec043"
+  ]
+ }
+}           
+            ]]></artwork>
+          </figure>
+          In this case, we started with the name of the pot luck
+          "wtsp.io/gts", the inital period for the pot luck "13 Nov
+          2015 14:09:35/5" and since this is the epoch, we used the
+          hardcoded string "EPOCH" along with a random string of
+          "...6f73bcdec043". Hashing all of this together gave us the
+          block chain id of "...fde5bf02a56e".
+          <figure>
+            <artwork><![CDATA[
+echo -n 'wtsp.io/gts13 Nov 2015 14:09:35/5EPOCH...6f73bcdec043' | sha512sum
+            ]]></artwork>
+          </figure>
+      </t>
+
+      <t>Step Four - Now the epoch timestamp has been published, lots
+      of actors may now submit dishes for the next block.
+          <figure>
+            <artwork><![CDATA[
+{
+"message": {
+ "action" : "submit-dish",
+ "payload" : {
+  "pot-luck-name": "wtsp.io/gts",
+  "timestamp" : "Tue Nov 24 13:03:14 MST 2015",
+  "for-period" : "13 Nov 2015 14:10:00/5",
+  "dish": "...ab3444033472"
+ }
+} 
+
+{
+"message": {
+ "action" : "submit-dish",
+ "payload" : {
+  "pot-luck-name": "wtsp.io/gts",
+  "timestamp" : "Tue Nov 24 13:03:15 MST 2015",
+  "for-period" : "13 Nov 2015 14:10:00/5",
+  "dish": "...f22ffbe65124"
+ }
+}           
+
+{
+"message": {
+ "action" : "submit-dish",
+ "payload" : {
+  "pot-luck-name": "wtsp.io/gts",
+  "timestamp" : "Tue Nov 24 13:03:16 MST 2015",
+  "for-period" : "13 Nov 2015 14:10:00/5",
+  "dish": "...85b9ccc0b134"
+ }
+}           
+            ]]></artwork>
+          </figure>
+      </t>
+
+      <t>Step Six - When the next boundary passed, we gather all the
+      dishes submitted, hash them and publish the next blockchain id:
+          <figure>
+            <artwork><![CDATA[
+{
+"wtsp.io/gts/1": {
+  "previous-blockchain-id": "...fde5bf02a56e",
+  "period" : "13 Nov 2015 14:10:00/5",
+  "block-chain-id" : "...42b7eac14c5d"
+  "dishes": [
+   "dish": "...ab3444033472"
+   "dish": "...f22ffbe65124"
+   "dish": "...85b9ccc0b134"
+  ]
+ }
+}           
+            ]]></artwork>
+          </figure>
+          This follows the same pattern except we added the last block
+          chain id in as well.
+          <figure>
+            <artwork><![CDATA[
+echo -n 'wtsp.io/gts/...fde5bf02a56e13 Nov 2015 14:10:00/5\
+...ab3444033472...f22ffbe65124...85b9ccc0b134' | sha512sum
+            ]]></artwork>
+          </figure>
+      </t>
+
+      <t>Since the blocks within the pot luck are made public and the
+      dishes are all listed in the blocks, anyone may perform all the
+      same computations the Pot Luck Director performed when he
+      published the block chain id to ensure they are valid.</t>
+
+      <t>The reason anyone may trust them to be valid is due to the
+      nature of the secure one way hash function. If the random data
+      you submitted in your dish is present, it is impossible for
+      anyone to pre-compute that block chain id.</t>
+
+      <t>One beautiful side effect of this protocol is that it takes
+      very little computational energy to come to group consensus. You
+      don't care if there is only a single other dish in the pot-luck
+      or if 100 million other participants all submitted dishes. If
+      your dish was hashed into the the block chain id, you know the
+      block chain id is valid.</t>
+    </section>
+
+    <section title="Security">
+      <t>This protocol is mean to be the base from which greater
+      things will be built. Therefore, it is kept very simple. One
+      downside to this is that the simplicity also leaves it open to
+      all kinds of abuse. From denial of service attacks to flooding
+      the system with data, no protections are present in this
+      protocol to deal with malicious attackers.</t>
+
+      <t>We believe this protocol will become one of the corner stones
+      of the web 3.0 movement based on block chain technology and all
+      that will allow in securely conducting business with automated
+      agents and as such this protocol must be kept simple and
+      open. Therefore, we must rely on System Administrators to put up
+      firewalls, block offending ip addresses and other such white hat
+      tactics to keep this service up.</t>
+
+      <t>We hope to very soon build important services upon the
+      foundation this protocol provides and as those services mature,
+      we may be able to fold some of that secure goodness back into
+      this protocol, but for now, we just have to hang our nuts in the
+      wind and let the shit eating pedophiles of the internet kick us
+      as best they can. Baby steps to the elevator Bob.</t>
+    </section>
+
+    <section title="Register a namespace">
+      <t>The system will initialize with an empty database. Anyone may
+      register any namespace on a first come first served basis. The
+      default namespace will be WTSP.io and this timestamp will be
+      available for everyone to use as a reference.</t>
+    </section>
+
+    <section title="Create a potluck">
+      <t>A potluck is just a virtual space containing a series of
+      timestamp blocks, starting with the epoch and going forward
+      according to the period the potluck was initialized with. Each
+      block in the blockchain will represent one Period and will
+      contain a linked list of the digital dishes submitted by the
+      various actors during that Period.</t>
+    </section>
+
+    <section title="Generate the epoch block chain">
+    </section>
+
+    <section title="Submit a dish">
+    </section>
+
+    <section title="review the block chain history">
+    </section>
+
+
+
+    <?rfc needLines="8" ?>
+
+
+    <section anchor="Acknowledgements" title="Acknowledgements">
+      <t>This template was derived from an initial version written by Pekka
+      Savola and contributed by him to the xml2rfc project.</t>
+
+      <t>This document is part of a plan to make xml2rfc indispensable.</t>
+    </section>
+
+    <!-- Possibly a 'Contributors' section ... -->
+
+    <section anchor="IANA" title="IANA Considerations">
+      <t>This memo includes no request to IANA.</t>
+
+      <t>All drafts are required to have an IANA considerations section (see
+       for a guide). If the draft does not require IANA to do
+      anything, the section contains an explicit statement that this is the
+      case (as above). If there are no requirements for IANA, the section will
+      be removed during conversion into an RFC by the RFC Editor.</t>
+    </section>
+
+    <section anchor="Security" title="Security Considerations">
+      <t>All drafts are required to have a security considerations section.
+      See for a guide.</t>
+    </section>
+  </middle>
+
+  <!--  *****BACK MATTER ***** -->
+
+  <back>
+    <section anchor="app-additional" title="Additional Stuff">
+      <t>This becomes an Appendix.</t>
+    </section>
+  </back>
+</rfc>

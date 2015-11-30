@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gts-ws:RegisterNameSpaceResponse xmlns:gts-types="http://os3.cc/gts/types/1.0"
+ xmlns:gts-ws="http://os3.cc/gts/ws/1.0"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+ xsi:schemaLocation="http://os3.cc/gts/ws/1.0 file:/home/aolsen/sb/pot-luck/gts/src/main/resources/gts-ws.xsd">
+    <gts-ws:status>
+        <gts-ws:status>SUCCESS</gts-ws:status>
+        <gts-ws:error/>
+    </gts-ws:status>
+</gts-ws:RegisterNameSpaceResponse>
