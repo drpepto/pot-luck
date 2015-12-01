@@ -12,7 +12,7 @@ public class NamespaceRepoTest {
 
 	@Mock
 	private RedisNamespaceAdapter redis;
-	
+
 	@Test
 	public void testAddNamespaceGoldenPath() {
 		try {
@@ -24,10 +24,10 @@ public class NamespaceRepoTest {
 			EasyMock.expect(redis.exists("/os3.cc")).andReturn(false);
 			EasyMock.expect(redis.put("/os3.cc", null)).andReturn(true);
 			EasyMock.replay(redis);
-			
+
 			// Now create the repo object and pass in the redis adapter
 			NamespaceRepo repo = new NamespaceRepo(redis);
-			
+
 			// Test creating our namespace
 			boolean result = repo.createNamespace("/os3.cc");
 			assertTrue(result);
@@ -36,7 +36,7 @@ public class NamespaceRepoTest {
 			fail(e.getMessage());
 		}
 	}
-	
+
 	@Test
 	public void testAddNamespaceNamespaceTaken() {
 		try {
@@ -44,13 +44,13 @@ public class NamespaceRepoTest {
 			// Simulate namespace already taken
 			EasyMock.expect(redis.exists("/os3.cc")).andReturn(true);
 			EasyMock.replay(redis);
-			
+
 			// Now create the repo object and pass in the redis adapter
 			NamespaceRepo repo = new NamespaceRepo(redis);
-			
+
 			// Test creating our namespace
 			boolean result = repo.createNamespace("/os3.cc");
-			
+
 			// Since the namespace was already taken, the call should fail
 			assertFalse(result);
 

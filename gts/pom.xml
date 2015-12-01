@@ -79,6 +79,24 @@
           </sources>
         </configuration>
       </plugin>      
+
+      <plugin>
+        <groupId>com.googlecode.maven-java-formatter-plugin</groupId>
+        <artifactId>maven-java-formatter-plugin</artifactId>
+        <version>0.3.1</version>
+        <configuration>
+          <includes>
+            <include>cc/os3/gts/**/*.java</include>
+          </includes>
+          <excludes/>
+          <lineEnding>LF</lineEnding>
+          <encoding>UTF-8</encoding>
+          <compilerSource>1.7</compilerSource>
+          <compilerCompliance>1.7</compilerCompliance>
+          <compilerTargetPlatform>1.7</compilerTargetPlatform>
+        </configuration>
+      </plugin>
+
     </plugins>
   </build>
   

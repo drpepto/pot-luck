@@ -13,14 +13,18 @@ import cc.os3.gts.xsd.RegisterNameSpaceResponse;
 public class XMLUtil {
 
 	private final static Logger logger = Logger.getLogger(XMLUtil.class);
-	
-	public static RegisterNameSpaceRequest getRegisterNameSpaceRequest(InputStream is) {
+
+	public static RegisterNameSpaceRequest getRegisterNameSpaceRequest(
+			InputStream is) {
 		RegisterNameSpaceRequest request = null;
-		if(is != null) {
+		if (is != null) {
 			try {
-				JAXBContext jaxbContext = JAXBContext.newInstance(RegisterNameSpaceRequest.class);
-				Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-				request = (RegisterNameSpaceRequest)jaxbUnmarshaller.unmarshal(is);
+				JAXBContext jaxbContext = JAXBContext
+						.newInstance(RegisterNameSpaceRequest.class);
+				Unmarshaller jaxbUnmarshaller = jaxbContext
+						.createUnmarshaller();
+				request = (RegisterNameSpaceRequest) jaxbUnmarshaller
+						.unmarshal(is);
 			} catch (Exception e) {
 				logger.error(e);
 			}
@@ -28,13 +32,17 @@ public class XMLUtil {
 		return request;
 	}
 
-	public static RegisterNameSpaceResponse getRegisterNameSpaceResponse(InputStream is) {
+	public static RegisterNameSpaceResponse getRegisterNameSpaceResponse(
+			InputStream is) {
 		RegisterNameSpaceResponse response = null;
-		if(is != null) {
+		if (is != null) {
 			try {
-				JAXBContext jaxbContext = JAXBContext.newInstance(RegisterNameSpaceResponse.class);
-				Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
-				response = (RegisterNameSpaceResponse)jaxbUnmarshaller.unmarshal(is);
+				JAXBContext jaxbContext = JAXBContext
+						.newInstance(RegisterNameSpaceResponse.class);
+				Unmarshaller jaxbUnmarshaller = jaxbContext
+						.createUnmarshaller();
+				response = (RegisterNameSpaceResponse) jaxbUnmarshaller
+						.unmarshal(is);
 			} catch (Exception e) {
 				logger.error(e);
 			}

@@ -12,7 +12,8 @@ public class RedisNamespaceAdapter implements NamespaceAdapter {
 	}
 
 	@Override
-	public boolean put(String path, byte[] contents) throws VirtualFilesystemException {
+	public boolean put(String path, byte[] contents)
+			throws VirtualFilesystemException {
 		return false;
 	}
 
@@ -20,6 +21,12 @@ public class RedisNamespaceAdapter implements NamespaceAdapter {
 	public byte[] get(String path) throws VirtualFilesystemException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public boolean finalize(String path) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
