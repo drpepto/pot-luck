@@ -3,9 +3,14 @@ package cc.os3.gts.domain;
 import java.security.MessageDigest;
 import java.util.LinkedHashSet;
 import java.util.Set;
-
 import cc.os3.gts.util.HashUtil;
 
+/**
+ * Roots implement the base functionality for Directories and
+ * Files. They have a fixed path of '/' and return null for the
+ * parent.
+ * @Author: Andy Olsen (andy@59clouds.com)
+ */
 public class MerkleRoot implements Merkle, Comparable<Merkle> {
 	protected boolean isDirty;
 	protected Set<Merkle> children;
@@ -30,6 +35,16 @@ public class MerkleRoot implements Merkle, Comparable<Merkle> {
 		return true;
 	}
 
+	/**
+	 * Compute the hash of all items in this Merkle Root. The hashing
+	 * algorithm used is SHA256. The method to compute is to start
+	 * with the absolute root of "/" and to add the hash of each child
+	 * element in the order the child was added.  For example, if you
+	 * had ["Waka", "Waja", "Walla"], you would not add [Waka, Waja
+	 * and Walla] to the hash digest, but rather add the SHA256 hash
+	 * of each value [SHA256("/"), SHA256(Waka), SHA256(Waja),
+	 * SHA256(Walla)].
+	 */
 	@Override
 	public String getHash() {
 		if (isDirty) {
@@ -59,11 +74,18 @@ public class MerkleRoot implements Merkle, Comparable<Merkle> {
 		return ROOT;
 	}
 
+	/**
+	 * Compare items together based on hash
+	 */
 	public int compareTo(Merkle m) {
 		if (this.getHash().equals(m.getHash())) {
 			return 0;
 		} else {
 			return -1;
 		}
+	}
+
+	public String toString() {
+		return hash;
 	}
 }
