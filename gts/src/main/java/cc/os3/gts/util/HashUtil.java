@@ -31,7 +31,9 @@ public class HashUtil {
 		try {
 			MessageDigest digest = MessageDigest.getInstance(SHA_256);
 			digest.update(path.getBytes(UTF8));
-			digest.update(content);
+			if(content != null) {
+				digest.update(content);
+			}
 			result = bytesToHex(digest.digest());
 		} catch (Exception e) {
 
