@@ -49,19 +49,214 @@
     <keyword>Election</keyword>
 
     <abstract>
-      <t>A global, open, secure, annonymous timestamp protocol to feed
-      the next generation of block chain protocols.</t>
+      <t>An open, annonymous, secure, global timestamp protocol to
+      serve as the foundation for the next generation of internet
+      enabled autonomous agent interactions.</t>
     </abstract>
   </front>
 
   <middle>
 
     <section title="Introduction">
-      <t>This document describes a simple protocol to allow previously
-      unknown actors to each contribute a small packet of random data
-      to a large digital pot, to hash the pot to generate a block
-      chain id and to verify the generated block chain id did indeed
-      come from all the dishes in the pot and so is trustworthy.</t>
+      <section title="Impetus">
+      <t>The first version of the Internet was built from non secure
+      and non verifiable protocols. It had to be this way for a
+      variety of reasons, but the downfall has been that it has
+      allowed the Global Deep Surveilance State to subvert the open
+      nature of the internet. The world has finally awoken to the
+      dangers presented by Ungoliant and her dark spawn and the second
+      version of the internet is being built with authentication,
+      authorization and psuedononymity built into the core
+      protocols. This protocol is one part of that core, i.e. Global
+      Timestamping.</t>
+
+      <t>I don't know if any of you remember Eddie Murphy's skit from
+      the 80's where he talks about his granmother always asking what
+      time it is, but that old woman was onto something whether she
+      knew it or not.</t>
+
+      <t>How do you get a large group of people to agree on what time
+      it is and more importantly still to commit to that time in a way
+      that cannot later be changed or renegged upon?</t> 
+
+      <t>To answer that question we must first digress into the nature
+      of time, or at least the frequency with which we measure it.</t>
+
+      </section>
+
+      <section title="Concepts of time">
+      <t>Any internet network may be further dividing into smaller
+      networks by applying a subnet mask to shift the number of bits
+      in the network portion to the host portion or vice versa. The
+      same concept may be applied to 64 bit timestamps. Doing so gives
+      us a useful notation for both subdividing and later aggregating
+      units of time.</t>
+
+      <t>For example, if we take the unix timestamp '1450116816' and
+      then format it with the ISO string "%d %m %YYYY %H:%M:%S %Z" we
+      end up with the string "14 Dec 2015 11:13:37 MST". We could then
+      subnet this instant in time by appending a / and an integer
+      representing the frequency of the data we were interested in.
+        <list style="symbols">
+          <t>/1 truncate the datetime to just the year.</t>
+          <t>/2 truncate the datetime to just the month.</t>
+          <t>/3 truncate the datetime to just the day.</t>
+          <t>/4 truncate the datetime to just the hour.</t>
+          <t>/5 truncate the datetime to just the minute.</t>
+          <t>/6 truncate the datetime to just the second.</t>
+        </list>
+        Here is a list of examples:
+        <list style="symbols">
+          <t>"14 Dec 2015 11:13:37 MST/1" would be truncated to
+          encompass the Period "01 Jan 2015 00:00:00/MST" to "31 Dec
+          2015 23:59:59/MST"</t>
+          <t>"14 Dec 2015 11:13:37 MST/2" would be truncated to
+          encompass the Period "01 Dec 2015 00:00:00/MST" to "31 Dec
+          2015 23:59:59/MST"</t>
+          <t>"14 Dec 2015 11:13:37 MST/3" would be truncated to
+          encompass the Period "14 Dec 2015 00:00:00 MST" to "14 Dec
+          2015 23:59:59 MST"</t>
+          <t>"14 Dec 2015 11:13:37 MST/4" would be truncated to
+          encompass the Period "14 Dec 2015 11:00:00/MST" to "14 Dec
+          2015 11:59:59/MST"</t>
+          <t>"14 Dec 2015 11:13:37 MST/5" would be truncated to
+          encompass the Period "14 Dec 2015 11:13:00/MST" to "14 Dec
+          2015 11:13:59/MST" </t>
+          <t>"14 Dec 2015 11:13:37 MST/6" would not be truncated at
+          all but would encompass the Period ""14 Dec 2015 11:13:37
+          MST" to ""14 Dec 2015 11:13:37 MST" or the span of exactly
+          one second.</t>
+        </list>
+      </t>
+
+      <t>We may then call these subnetted times a Period. A Period is
+      a range of time with a start date and an end date. A Period
+      then, could represent a window of time in a compact format.</t>
+      </section>
+
+
+      <section title="Pot Lucks">
+        <t>With the concept of Periods of time under our belt, let us
+        turn our attention to Pot Lucks.</t>
+
+        <t>Pot Lucks, in the real world, are events held generally on
+        a recurring bases where when the next interval for the Pot
+        Luck arrives, people get togther in a single location and each
+        brings a food dish to share with everyone present.</t>
+
+        <t>In a similar vein, for a digital Pot Luck, there are well
+        known intervals when people or agents are expected to gather
+        around a known namespace and submit digital dishes of random
+        data to be hashed together into a final hexidecimal hash to be
+        used as the next id in a blockchain.</t>
+
+        <t>For example, I might organize a digital PotLuck on an
+        hourly basis. Every hour, those I have invited to my PotLuck
+        will submit a digital dish of random data. I will then hash
+        all of this data together and use the final value as the next
+        id in my block chain.</t>
+
+        <t>Because I publish all of the dishes in my PotLuck, everyone
+        who submitted a dish can ensure their dish is present at the
+        PotLuck and that the random data in their dish was properly
+        hashed into the final PotLuck result.</t>
+
+        <t>If I start my PotLuck at "2015 01 Jan 00:00:00/4" then
+        everyone knows the PotLuck will iterate every hour on the
+        hour, starting from the first of January 2015 at Midnight and
+        iterating every hour on an ongoing basis.</t>
+
+        <t>Everyone who submits a dish to this PotLuck includes the
+        time they think it is with their dish. This time is hashed
+        into the final result.</t>
+
+        <t>If the majority of the dishes submitted match the PotLuck
+        window, everyone may be assured the block chain id, represents
+        the timestamp involved.</t>
+
+        <t>To recap, the core idea is that if everyone submits what
+        time they think it is, and this time matches the stated
+        frequency of the PotLuck and each person then contributes
+        random data to the PotLuck and this data is hashed all
+        together, then everyone knows the end result is good and it is
+        tied to the time period involved.</t>
+
+        <t>The reason everyone knows the result is good is that these
+        results are all published and every participant may then
+        download all the dishes in the pot luck, verify their dish is
+        present, verify their timestamp matches window and then
+        perform the same hashing function. If the end result matches,
+        the result must be good because no one may precompute a result
+        with random data using a secure one way hash.</t>
+
+        <t>Said another way, so long as the digital dish of random
+        data I submitted was hashed together with the other dishes the
+        end result must be random since it is impossible for me or
+        anyone else to pre compute collisions in a secure one way hash
+        function.</t>
+
+        <t>This protocol is simple and highly scalable, especially
+        compared to current bitcoin mining techniques.</t>
+      </section>
+    </section>
+
+
+    <section title="The Pot Luck Metaphor">
+      <t>From the introduction, we know that from a high level point
+      of view, we will submit random data, have it hashed with other
+      random data and a nice block chain id spit out. Let's dig into
+      this in more detail and flesh out the low level details of how a
+      digital Pot Luck might operate.</t>
+
+      <t>Each digital PotLuck must be assigned to a global namespace.</t>
+
+      <t>The global namespace will mirror a unix filesystem with /
+      being the root and then all of the namespaces mounting to / like
+      directories do in unix.</t>
+
+      <t>Namespaces will be handed out on a first come, first served
+      basis. Each namespace will cost one bitcoin. The idea is not to
+      cheat people, but to keep people from squatting on
+      namespaces. Anyone may afford one bitcoin, but there are not
+      enough bitcoin in the world to allow indescriminate
+      squatting.</t>
+
+      <t>Once you have a namespace, you may create your own Pot
+      Luck. In this context, a PotLuck corresponds exactly one to one
+      with a block chain.</t>
+
+      <t>Each Pot Luck must have both a fixed start Period, a unique
+      name within the namesapce, and a random initializtion vector.</t>
+
+      <t>Significantly more prestige is granted to PotLucks that use
+      the last block chain id of popular PotLucks as the
+      initialization vector since this guarantees no one is trying to
+      game the secure one way hash function.</t>
+
+      <t>A PotLuck may be referenced by the PotLuck URI. A PotLuck URI
+      consists of the global namespace and the unique PotLuck
+      name.</t> 
+
+      <t>The root block in a PotLuck contains the initialization
+      vector as the first dish and then may contain additional
+      dishes.</t>
+
+      <t>The final hash value becomes the block id of the 0 index
+      block.</t>
+
+      <t>The PotLuck is now open to receive dishes for the next
+      scheduled PotLuck. The Dishes will be added in linear fashion to
+      the Block until the time comes for the next PotLuck.</t>
+
+      <t>When the time comes for the next PotLuck, all the dishes in
+      the previous block will be hashed and the result used as the id
+      for that block.</t>
+
+      <t>The system continues this pattern until the PotLuck is
+      discontinued.</t>
+
+      <t>A detailed example is available in the Quick Start
+      section</t>
     </section>
 
     <section title="Glossary">
@@ -89,52 +284,13 @@ echo -n 'a number of random bytes' | sha512sum
         pot lucks, accepting the submission of digital dishes and
         periodically generating block chain ids.</t>
 
+        <t>Period - A repeating frequency of time. For example, daily,
+        monthly, yearly etc.</t>
+
         <t>Block Chain Id - A unique id with the special
         characteristic that the id is generated in such a way that it
         forms an unbreakable chain with all the ids that have come
         before it.</t>
-
-        <t>Period - A 64 bit datetime value formatted with "%d %m
-        %YYYY %H:%M:%S %Z" to a string representation that can then
-        further be sub divided like a network is subnetted by
-        appending a / and the number of date elements to keep.
-        <list style="symbols">
-          <t>/1 Truncate the datetime to just the year.</t>
-          <t>/2 Truncate the datetime to just the year and month.</t>
-          <t>/3 Truncate the datetime to just the year, month and
-          day.</t>
-          <t>/4 Truncate the datetime to just the year, month, day and
-          hour.</t>
-          <t>/5 Truncate the datetime to just the year, month, day,
-          hour and minute.</t>
-          <t>/6 Truncate the datetime to just the year, month, day,
-          hour, minute and second.</t>
-        </list>
-        Here is a list of examples:
-        <list style="symbols">
-          <t>"24 Nov 2015 13:25:18 MST/1" would be truncated to "01
-          Jan 2015 00:00:00/MST" and any search with this Period would
-          find any date in 2015.</t>
-          <t>"24 Nov 2015 13:25:18 MST/2" would be truncated to "01
-          Nov 2015 00:00:00/MST" and any search this Period would find
-          any date in November of 2015.</t>
-          <t>"24 Nov 2015 13:25:18 MST/3" would be truncated to "24
-          Nov 2015 00:00:00/MST" and any search this Period would find
-          any date on the 24th of November 2015.</t>
-          <t>"24 Nov 2015 13:25:18 MST/4" would be truncated to "24
-          Nov 2015 13:00:00/MST"and any search with this Period would
-          find any date from 1:00:00 pm to 1:59:59 on the 24th of
-          November 2015.</t>
-          <t>"24 Nov 2015 13:25:18 MST/5" would be truncated to "24
-          Nov 2015 13:25:00/MST" and any search with this Period would
-          find any date from 1:25:00 pm to 1:25:59 pm on the 24th of
-          November 2015.</t>
-          <t>"24 Nov 2015 13:25:18 MST/6" would be truncated to "24
-          Nov 2015 13:25:18/MST" and any search would only find date
-          that fell on exactly on the 18th second of the date
-          specified.</t>
-        </list>
-      </t>
 
         <t>Epoch - The start Period for a pot lock. This Period will
         determine how often block chain ids are created.</t>
@@ -142,155 +298,159 @@ echo -n 'a number of random bytes' | sha512sum
       </t>
     </section>
 
+    <section title="Dramatis Personae">
+      <t>Here is a list of relevant terms:
+      <list style="symbols">
+        <t>Archie - The Pot Luck Adminstrator</t>
+        <t>Bubba - The Pot Luck Director</t>
+        <t>Chuckles - An attendee to Bubba's PotLuck</t>
+      </list>
+      </t>
+    </section>
+
     <section title="Quick Start">
-      <t>A quick example to show the basic concepts:</t>
-
-      <t>Step One - We will register the World Timestamp Protocol
-      namespace for the benefit of humanity and all that do-gooder,
-      senitive, touchy feely koomaya bullshit:
+      <t>Let us suppose Archie has gone to the pain and trouble of
+      setting up a PotLuck server at http://wtsp.io. As part of this
+      process, Archie generates an X509 Certificate.</t>
+      
+      <t>Now, Bubba having his hot little bitcoin in his hand, wants
+      to register the namespace wtsp.io. He uses the included client
+      or the web interface, but in either case the following payload
+      is generated:
           <figure>
             <artwork><![CDATA[
 {
-"message": {
- "action" : "create-namespace",
- "payload" : {
-  "namespace": "wtsp.io"
- }
+ "requested-namespace": "wtsp.io",
+ "owner-public-key": "base64 enc of owner public key",
+ "payment": "bitcoin address enciphered with Arhices public key"
 }           
             ]]></artwork>
           </figure>
       </t>
 
-      <t>Step Two - We will create a pot luck that resolves to the
-      minute. That is, every minute, we will get a new block chain.
+      <t>Archie publishes the namespace in the global registrar.</t>
+
+      <t>Bubba creates a PotLuck named "gts_minute":
           <figure>
             <artwork><![CDATA[
 {
-"message": {
- "action" : "create-pot-luck",
- "payload" : {
-  "pot-luck-name": "wtsp.io/gts",
-  "epoch" : "13 Nov 2015 14:09:35 MST/5"
- }
-}           
+  "pot-luck-name": "wtsp.io/gts_minute",
+  "start-period" : "01 Jan 2015 14:00:00 MST/5",
+  "iv": "...ccc854c",
+  "signature": "base64 of signature of potluck name"
+}
+
             ]]></artwork>
           </figure>
       </t>
 
-      <t>Step Three - Publish the epoch blockchain id:
+      <t>Archie hashes the initial vector to produce the zero index
+      block:
           <figure>
             <artwork><![CDATA[
 {
-"wtsp.io/gts/0": {
+"wtsp.io/gts_minute/0": {
   "previous-blockchain-id": "",
-  "timestamp" : "13 Nov 2015 14:09:35/5",
-  "next-timestamp": "13 Nov 2015 14:10:00/5",
-  "block-chain-id" : "...fde5bf02a56e"
+  "period" : "01 Jan 2015 14:00:00 MST/5",
+  "next-period" : "",
+  "block-chain-id" : "...38ff63"
   "dishes": [
-   "EPOCH",
-   "...6f73bcdec043"
+   {
+     "for-period": "01 Jan 2015 14:00:00 MST/5",
+     "dish": "...288716"},
+   }
   ]
  }
 }           
             ]]></artwork>
           </figure>
-          In this case, we started with the name of the pot luck
-          "wtsp.io/gts", the inital period for the pot luck "13 Nov
-          2015 14:09:35/5" and since this is the epoch, we used the
-          hardcoded string "EPOCH" along with a random string of
-          "...6f73bcdec043". Hashing all of this together gave us the
-          block chain id of "...fde5bf02a56e".
+      </t>
+
+      <t>In this case, we started with the name of the PotLuck URI
+      "wtsp.io/gts_minute", the start period of "01 Jan 2015 14:00:00
+      MST/5" and a random initializtion vector: "...ccc854c". Hashing
+      these three values together gives us "...288716"
           <figure>
             <artwork><![CDATA[
-echo -n 'wtsp.io/gts13 Nov 2015 14:09:35/5EPOCH...6f73bcdec043' | sha512sum
+echo -n 'wtsp.io/gts_minute01 Jan 2015 14:00:00 MST/5...ccc854c' \
+| sha256sum
             ]]></artwork>
           </figure>
       </t>
 
-      <t>Step Four - Now the epoch timestamp has been published, lots
-      of actors may now submit dishes for the next block.
+      <t>Now hashing the dishes (in this case only the one) we get:
+      "...38ff63" which is our block chain id.
+          <figure>
+            <artwork><![CDATA[
+echo -n '...ccc854c01 Jan 2015 14:00:00 MST/5...288716' | sha256sum
+            ]]></artwork>
+          </figure>
+      </t>
+
+      <t>Now the next block, id 1, is opened and all submitted dishes
+      are added to it:
           <figure>
             <artwork><![CDATA[
 {
-"message": {
- "action" : "submit-dish",
- "payload" : {
-  "pot-luck-name": "wtsp.io/gts",
-  "timestamp" : "Tue Nov 24 13:03:14 MST 2015",
-  "for-period" : "13 Nov 2015 14:10:00/5",
-  "dish": "...ab3444033472"
- }
-} 
-
-{
-"message": {
- "action" : "submit-dish",
- "payload" : {
-  "pot-luck-name": "wtsp.io/gts",
-  "timestamp" : "Tue Nov 24 13:03:15 MST 2015",
-  "for-period" : "13 Nov 2015 14:10:00/5",
-  "dish": "...f22ffbe65124"
- }
-}           
-
-{
-"message": {
- "action" : "submit-dish",
- "payload" : {
-  "pot-luck-name": "wtsp.io/gts",
-  "timestamp" : "Tue Nov 24 13:03:16 MST 2015",
-  "for-period" : "13 Nov 2015 14:10:00/5",
-  "dish": "...85b9ccc0b134"
+"wtsp.io/gts_minute/1": {
+  "previous-blockchain-id": ""...38ff63",
+  "period" : "01 Jan 2015 14:01:00 MST/5",
+  "block-chain-id" : "..."
+  "dishes": [
+   {
+    "for-period" : "01 Jan 2015 14:01:00 MST/5",
+    "dish": "...033472"
+   },
+   {
+    "for-period" : "01 Jan 2015 14:01:00 MST/5",
+    "dish": "...7a7311"
+   },
+   {
+    "for-period" : "01 Jan 2015 14:01:00 MST/5",
+    "dish": "...a40c97"
+   },
+  ]
  }
 }           
             ]]></artwork>
           </figure>
       </t>
 
-      <t>Step Six - When the next boundary passed, we gather all the
-      dishes submitted, hash them and publish the next blockchain id:
+      <t>Hashing all these:
+          <figure>
+            <artwork><![CDATA[
+echo -n '01 Jan 2015 14:01:00 MST/5...033472' | sha256sum
+echo -n '01 Jan 2015 14:01:00 MST/5...7a7311' | sha256sum
+echo -n '01 Jan 2015 14:01:00 MST/5...a40c97' | sha256sum
+
+==
+
+echo -n 'wtsp.io/gts/101 Jan 2015 14:01:00 MST/5...\
+70eb9e...552c04...a2801d' | sha256sum
+
+final result is "...c4b9b6"
+            ]]></artwork>
+          </figure>
+      </t>
+
+      <t>Finally when the time comes for the PotLuck to go live
+      (typically 15 secs before the next item) Bubba will close the
+      PotLuck, hash the dishes and publish the result:
           <figure>
             <artwork><![CDATA[
 {
 "wtsp.io/gts/1": {
-  "previous-blockchain-id": "...fde5bf02a56e",
-  "period" : "13 Nov 2015 14:10:00/5",
-  "block-chain-id" : "...42b7eac14c5d"
+  "previous-blockchain-id": "...02a56e",
+  "period" : "01 Jan 2015 14:01:00 MST/5",
+  "block-chain-id" : "...c4b9b6"
   "dishes": [
-   "dish": "...ab3444033472"
-   "dish": "...f22ffbe65124"
-   "dish": "...85b9ccc0b134"
+(ommitted for brevity)
   ]
  }
 }           
             ]]></artwork>
           </figure>
-          This follows the same pattern except we added the last block
-          chain id in as well.
-          <figure>
-            <artwork><![CDATA[
-echo -n 'wtsp.io/gts/...fde5bf02a56e13 Nov 2015 14:10:00/5\
-...ab3444033472...f22ffbe65124...85b9ccc0b134' | sha512sum
-            ]]></artwork>
-          </figure>
       </t>
-
-      <t>Since the blocks within the pot luck are made public and the
-      dishes are all listed in the blocks, anyone may perform all the
-      same computations the Pot Luck Director performed when he
-      published the block chain id to ensure they are valid.</t>
-
-      <t>The reason anyone may trust them to be valid is due to the
-      nature of the secure one way hash function. If the random data
-      you submitted in your dish is present, it is impossible for
-      anyone to pre-compute that block chain id.</t>
-
-      <t>One beautiful side effect of this protocol is that it takes
-      very little computational energy to come to group consensus. You
-      don't care if there is only a single other dish in the pot-luck
-      or if 100 million other participants all submitted dishes. If
-      your dish was hashed into the the block chain id, you know the
-      block chain id is valid.</t>
     </section>
 
     <section title="Security">
